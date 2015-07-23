@@ -1,0 +1,90 @@
+---
+title: "Statistical Inference Project Part 1"
+author: "Aaron Augustine"
+date: "July 22, 2015" 
+output:
+  html_document:
+    keep_md: yes
+  pdf_document: default
+---
+
+#Report Overivew
+The purpose of this will illustrate through a simulation exercise the properties of the distribution of the mean of 40 exponentials. It will include details on (a) Sample Mean versus Theoretical Mean, (b) Sample Variance versus Theoretical Variance and (c) Show that the distribution is approximately normal.
+
+#Execute the simulation
+First we will execute the simulation.  Lets start by setting the working directory and referencing libraries.
+
+```{r set work directory and reference libraries}
+#set working directory
+setwd("~/CourseraRClass/StatInf")
+
+#reference necessary libs
+library(ggplot2)
+```
+ 
+Then execute the simulations using the parameters below.
+```{r execute simulations}
+set.seed(9867)
+lambda <-.2
+number_sim <-1000
+sample_size <- 40
+data<-matrix(rexp(number_sim*sample_size, lambda),number_sim,sample_size)
+```
+
+#Results
+##Sample Mean versus Theoretical Mean
+```{r sample means}
+data_means<-apply(data, 1, mean)
+
+
+sample_mean<-mean(data_means)
+sample_mean
+
+theo_mean<-1/lambda 
+theo_mean
+```
+Using the above code the sample mean is `r sample_mean` and the theorectical mean is `r theo_mean`.  The plot below gives a visual of the simulation along with the sample ("black line") and theorectical mean ("red line").
+ 
+```{r sample means plot}
+q<-ggplot() + 
+  aes(data_means) + 
+  geom_histogram(binwidth=.2, colour="black", fill="white") +
+  geom_vline(aes(xintercept=theo_mean),  
+             color="red", linetype="solid", size=1) +
+  geom_vline(aes(xintercept=sample_mean),   
+             color="black", linetype="dashed", size=1) +
+  labs(list(title = "Histogram of Means", x = "Means", y = "Frequency"))
+q
+
+```
+
+
+##Sample Variance versus Theoretical Variance  
+The sample variance is the variance of the sample means
+
+```{r variances of mean}
+data_var<-var(data_means)
+data_var
+```
+with a value of `r data_var`.
+
+The theorectical variance is variance of the exponential distribution (1/lambad)^2 divided by the sample size.  See calculation below.
+```{r theorectical variance}
+theo_var<-(1/lambda)^2 / sample_size
+theo_var
+```
+
+##Show the distribution is normal.
+The distribution of sample means are normally distributed.  To demonstrate this below is the probability density of the sample means (black line) along side the normal distribution with a mean of `r theo_mean` and variance of `r theo_var`.   You'll notice they are very close.
+ 
+```{r show normal}
+p<-ggplot() + 
+  aes(data_means) + 
+  geom_density() +
+  stat_function(geom="line", 
+                fun=dnorm, 
+                colour = "red", 
+                arg=list(mean=theo_mean,sd=sqrt(theo_var))) +
+  labs(list(title = "Probabilty Density"))
+p
+```
