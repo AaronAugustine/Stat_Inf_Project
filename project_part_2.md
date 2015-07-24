@@ -12,7 +12,7 @@ The purpose of this document is to analyse the ToothGrowth Data in R.  This will
 
 #Analysis
 ## Load the ToothGrowth data and perform some basic exploratory data analyses
-First we set the relevant working directory and libraries. Then we load in the the data. After than we can run a series of functions to get a feel for the data.  The code and results for this part are given in the Appendix.
+The code and results for this part are given in the Appendix.
 
 
 
@@ -20,7 +20,7 @@ First we set the relevant working directory and libraries. Then we load in the t
 A great summary of the data can be found at  https://class.coursera.org/statinference-030/forum/thread?thread_id=26.
 
 ## Use confidence intervals and/or hypothesis tests to compare tooth growth by supp and dose
-For this section we will conduct 3 hypothesis using non paired T-tests, one for each dose level.  In each case we will test the null hypotheis that the mean length of the odontoblast cells is the same between the form of Orange Juice (OJ) or chemically pure Vitamin C in aqueous solution (VC).  In each case we are assuming unequal variances. 
+For this section we will conduct 3 hypothesis using non paired T-tests, one for each dose level.  In each case we will test the null hypothesis that the mean length of the odontoblast cells is the same between the form of Orange Juice (OJ) or chemically pure Vitamin C in aqueous solution (VC).  In each case we are assuming unequal variances. 
 
 ```r
 doselist <- unique(ToothGrowth$dose)
@@ -71,9 +71,10 @@ for (i in doselist) {
 ## mean in group OJ mean in group VC 
 ##            26.06            26.14
 ```
-For dose levels .5 and 1 we reject the null hypotheis that the means are equal since they both have p-values less than .05.  For does level 2, we fail to reject the null hypothesis since the p-value is greater than .05.
+For dose levels .5 and 1 we reject the null hypothesis that the means are equal since they both have p-values less than .05.  For does level 2, we fail to reject the null hypothesis since the p-value is greater than .05.
 
-Appendix
+
+#Appendix
 
 ```r
 head(ToothGrowth)
