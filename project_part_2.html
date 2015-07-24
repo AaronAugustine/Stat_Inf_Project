@@ -70,47 +70,22 @@ img {
 
 <div id="background" class="section level1">
 <h1>Background</h1>
-<p>The purpose of this document is to analyse the ToothGrowth Data in R. This will include: 1. Load the ToothGrowth data and perform some basic exploratory data analyses, 2. Provide a basic summary of the data, and 3. Use confidence intervals and/or hypothesis tests to compare tooth growth by supp and dose</p>
-<p>To make it easier to understand the results I’ve combined the report and figured together.</p>
+<p>The purpose of this document is to analyse the ToothGrowth Data in R. This will include:</p>
+<ol style="list-style-type: decimal">
+<li><p>Load the ToothGrowth data and perform some basic exploratory data analyses,</p></li>
+<li><p>Provide a basic summary of the data, and</p></li>
+<li><p>Use confidence intervals and/or hypothesis tests to compare tooth growth by supp and dose</p></li>
+</ol>
 </div>
 <div id="analysis" class="section level1">
 <h1>Analysis</h1>
 <div id="load-the-toothgrowth-data-and-perform-some-basic-exploratory-data-analyses" class="section level2">
 <h2>Load the ToothGrowth data and perform some basic exploratory data analyses</h2>
-<p>First we set the relevant working directory and libraries.</p>
-<pre class="r"><code>#set working directory
-setwd(&quot;~/CourseraRClass/StatInf&quot;)
-
-#reference necessary libs
-library(ggplot2)</code></pre>
-<p>Then we load in the the data.</p>
-<pre class="r"><code>data(&quot;ToothGrowth&quot;)</code></pre>
-<p>After than we can run a series of functions to get a feel for the data.</p>
-<pre class="r"><code>head(ToothGrowth)</code></pre>
-<pre><code>##    len supp dose
-## 1  4.2   VC  0.5
-## 2 11.5   VC  0.5
-## 3  7.3   VC  0.5
-## 4  5.8   VC  0.5
-## 5  6.4   VC  0.5
-## 6 10.0   VC  0.5</code></pre>
-<pre class="r"><code>str(ToothGrowth)</code></pre>
-<pre><code>## 'data.frame':    60 obs. of  3 variables:
-##  $ len : num  4.2 11.5 7.3 5.8 6.4 10 11.2 11.2 5.2 7 ...
-##  $ supp: Factor w/ 2 levels &quot;OJ&quot;,&quot;VC&quot;: 2 2 2 2 2 2 2 2 2 2 ...
-##  $ dose: num  0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 ...</code></pre>
-<pre class="r"><code>with(ToothGrowth,table(supp,dose))</code></pre>
-<pre><code>##     dose
-## supp 0.5  1  2
-##   OJ  10 10 10
-##   VC  10 10 10</code></pre>
-<pre class="r"><code>qplot(dose,len,data=ToothGrowth, xlab=&quot;Dose&quot;, ylab=&quot;Length&quot;, main=&quot;&quot;, facets=.~supp)</code></pre>
-<p><img src="data:image/png;base64,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" /></p>
+<p>First we set the relevant working directory and libraries. Then we load in the the data. After than we can run a series of functions to get a feel for the data. The code and results for this part are given in the Appendix.</p>
 </div>
 <div id="provide-a-basic-summary-of-the-data" class="section level2">
 <h2>Provide a basic summary of the data</h2>
-<p>The below was taken Coursera discussion forum, <a href="https://class.coursera.org/statinference-030/forum/thread?thread_id=26" class="uri">https://class.coursera.org/statinference-030/forum/thread?thread_id=26</a>, which provided a great summary of the data.</p>
-<p>The data consists of measurements of the mean length of the odontoblast cells harvested from the incisor teeth of a population of 60 guinea pigs. These animals were divided into 6 groups of 10 and consistently fed a diet with one of 6 Vitamin C supplement regimes for a period of 42 days. The Vitamin C was administered either in the form of Orange Juice (OJ) or chemically pure Vitamin C in aqueous solution (VC). Each animal received the same daily dosage of Vitamin C (either 0.5, 1.0 or 2.0 milligrams) consistently. Since each combination of supplement type and dosage was given to 10 animals this required a total of 60 animals for the study. After 42 days, the animals were euthanized, their incisor teeth were harvested and subject to analysis via optical microscopy to determine the length (in microns) of the odontoblast cells (the layer between the pulp and the dentine). The ToothGrowth data set therefore consists of 60 observations of the 3 variables - mean length of odontoblasts (microns), supplement type (OJ or VC) and Vitamin C dosage (milligrams/day).</p>
+<p>A great summary of the data can be found at <a href="https://class.coursera.org/statinference-030/forum/thread?thread_id=26" class="uri">https://class.coursera.org/statinference-030/forum/thread?thread_id=26</a>.</p>
 </div>
 <div id="use-confidence-intervals-andor-hypothesis-tests-to-compare-tooth-growth-by-supp-and-dose" class="section level2">
 <h2>Use confidence intervals and/or hypothesis tests to compare tooth growth by supp and dose</h2>
@@ -160,6 +135,27 @@ for (i in doselist) {
 ## mean in group OJ mean in group VC 
 ##            26.06            26.14</code></pre>
 <p>For dose levels .5 and 1 we reject the null hypotheis that the means are equal since they both have p-values less than .05. For does level 2, we fail to reject the null hypothesis since the p-value is greater than .05.</p>
+<p>Appendix</p>
+<pre class="r"><code>head(ToothGrowth)</code></pre>
+<pre><code>##    len supp dose
+## 1  4.2   VC  0.5
+## 2 11.5   VC  0.5
+## 3  7.3   VC  0.5
+## 4  5.8   VC  0.5
+## 5  6.4   VC  0.5
+## 6 10.0   VC  0.5</code></pre>
+<pre class="r"><code>str(ToothGrowth)</code></pre>
+<pre><code>## 'data.frame':    60 obs. of  3 variables:
+##  $ len : num  4.2 11.5 7.3 5.8 6.4 10 11.2 11.2 5.2 7 ...
+##  $ supp: Factor w/ 2 levels &quot;OJ&quot;,&quot;VC&quot;: 2 2 2 2 2 2 2 2 2 2 ...
+##  $ dose: num  0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 ...</code></pre>
+<pre class="r"><code>with(ToothGrowth,table(supp,dose))</code></pre>
+<pre><code>##     dose
+## supp 0.5  1  2
+##   OJ  10 10 10
+##   VC  10 10 10</code></pre>
+<pre class="r"><code>qplot(dose,len,data=ToothGrowth, xlab=&quot;Dose&quot;, ylab=&quot;Length&quot;, main=&quot;&quot;, facets=.~supp)</code></pre>
+<p><img src="data:image/png;base64,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" /></p>
 </div>
 </div>
 

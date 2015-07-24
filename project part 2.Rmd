@@ -6,42 +6,31 @@ output:
   html_document: 
     keep_md: yes
 ---
- 
 #Background
 The purpose of this document is to analyse the ToothGrowth Data in R.  This will include:
-1. Load the ToothGrowth data and perform some basic exploratory data analyses, 
-2. Provide a basic summary of the data, and
-3. Use confidence intervals and/or hypothesis tests to compare tooth growth by supp and dose 
 
-To make it easier to understand the results I've combined the report and figures together.
+1. Load the ToothGrowth data and perform some basic exploratory data analyses, 
+
+2. Provide a basic summary of the data, and 
+
+3. Use confidence intervals and/or hypothesis tests to compare tooth growth by supp and dose 
 
 #Analysis
 ## Load the ToothGrowth data and perform some basic exploratory data analyses
-First we set the relevant working directory and libraries.
-```{r}
+First we set the relevant working directory and libraries. Then we load in the the data. After than we can run a series of functions to get a feel for the data.  The code and results for this part are given in the Appendix.
+```{r, echo=FALSE}
 #set working directory
 setwd("~/CourseraRClass/StatInf")
 
 #reference necessary libs
 library(ggplot2)
 ```
-Then we load in the the data.
-```{r}
+```{r, echo=FALSE}
 data("ToothGrowth")
 ```
 
-After than we can run a series of functions to get a feel for the data.
-```{r, fig.height=4, fig.width=4}
-head(ToothGrowth)
-str(ToothGrowth)
-with(ToothGrowth,table(supp,dose))
-qplot(dose,len,data=ToothGrowth, xlab="Dose", ylab="Length", main="", facets=.~supp)
-```
-
-## Provide a basic summary of the data
-The below was taken Coursera discussion forum, https://class.coursera.org/statinference-030/forum/thread?thread_id=26, which provided a great summary of the data.
-
-The data consists of measurements of the mean length of the odontoblast cells harvested from the incisor teeth of a population of 60 guinea pigs. These animals were divided into 6 groups of 10 and consistently fed a diet with one of 6 Vitamin C supplement regimes for a period of 42 days. The Vitamin C was administered either in the form of Orange Juice (OJ) or chemically pure Vitamin C in aqueous solution (VC). Each animal received the same daily dosage of Vitamin C (either 0.5, 1.0 or 2.0 milligrams) consistently. Since each combination of supplement type and dosage was given to 10 animals this required a total of 60 animals for the study. After 42 days, the animals were euthanized, their incisor teeth were harvested and subject to analysis via optical microscopy to determine the length (in microns) of the odontoblast cells (the layer between the pulp and the dentine). The ToothGrowth data set therefore consists of 60 observations of the 3 variables - mean length of odontoblasts (microns), supplement type (OJ or VC) and Vitamin C dosage (milligrams/day).
+##Provide a basic summary of the data
+A great summary of the data can be found at  https://class.coursera.org/statinference-030/forum/thread?thread_id=26.
 
 ## Use confidence intervals and/or hypothesis tests to compare tooth growth by supp and dose
 For this section we will conduct 3 hypothesis using non paired T-tests, one for each dose level.  In each case we will test the null hypotheis that the mean length of the odontoblast cells is the same between the form of Orange Juice (OJ) or chemically pure Vitamin C in aqueous solution (VC).  In each case we are assuming unequal variances. 
@@ -54,3 +43,14 @@ for (i in doselist) {
 }
 ```
 For dose levels .5 and 1 we reject the null hypotheis that the means are equal since they both have p-values less than .05.  For does level 2, we fail to reject the null hypothesis since the p-value is greater than .05.
+
+Appendix
+```{r}
+head(ToothGrowth)
+str(ToothGrowth)
+with(ToothGrowth,table(supp,dose))
+```
+```{r, fig.height=5, fig.width=5}
+qplot(dose,len,data=ToothGrowth, xlab="Dose", ylab="Length", main="", facets=.~supp)
+```
+

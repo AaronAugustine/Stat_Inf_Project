@@ -1,80 +1,23 @@
 # Statistical Inference Project Part 2
 Aaron Augustine  
 July 22, 2015  
- 
 #Background
 The purpose of this document is to analyse the ToothGrowth Data in R.  This will include:
-1. Load the ToothGrowth data and perform some basic exploratory data analyses, 
-2. Provide a basic summary of the data, and
-3. Use confidence intervals and/or hypothesis tests to compare tooth growth by supp and dose 
 
-To make it easier to understand the results I've combined the report and figured together.
+1. Load the ToothGrowth data and perform some basic exploratory data analyses, 
+
+2. Provide a basic summary of the data, and 
+
+3. Use confidence intervals and/or hypothesis tests to compare tooth growth by supp and dose 
 
 #Analysis
 ## Load the ToothGrowth data and perform some basic exploratory data analyses
-First we set the relevant working directory and libraries.
+First we set the relevant working directory and libraries. Then we load in the the data. After than we can run a series of functions to get a feel for the data.  The code and results for this part are given in the Appendix.
 
-```r
-#set working directory
-setwd("~/CourseraRClass/StatInf")
 
-#reference necessary libs
-library(ggplot2)
-```
-Then we load in the the data.
 
-```r
-data("ToothGrowth")
-```
-
-After than we can run a series of functions to get a feel for the data.
-
-```r
-head(ToothGrowth)
-```
-
-```
-##    len supp dose
-## 1  4.2   VC  0.5
-## 2 11.5   VC  0.5
-## 3  7.3   VC  0.5
-## 4  5.8   VC  0.5
-## 5  6.4   VC  0.5
-## 6 10.0   VC  0.5
-```
-
-```r
-str(ToothGrowth)
-```
-
-```
-## 'data.frame':	60 obs. of  3 variables:
-##  $ len : num  4.2 11.5 7.3 5.8 6.4 10 11.2 11.2 5.2 7 ...
-##  $ supp: Factor w/ 2 levels "OJ","VC": 2 2 2 2 2 2 2 2 2 2 ...
-##  $ dose: num  0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 ...
-```
-
-```r
-with(ToothGrowth,table(supp,dose))
-```
-
-```
-##     dose
-## supp 0.5  1  2
-##   OJ  10 10 10
-##   VC  10 10 10
-```
-
-```r
-qplot(dose,len,data=ToothGrowth, xlab="Dose", ylab="Length", main="", facets=.~supp)
-```
-
-![](project_part_2_files/figure-html/unnamed-chunk-3-1.png) 
-
-## Provide a basic summary of the data
-The below was taken Coursera discussion forum, https://class.coursera.org/statinference-030/forum/thread?thread_id=26, which provided a great summary of the data.
-
-The data consists of measurements of the mean length of the odontoblast cells harvested from the incisor teeth of a population of 60 guinea pigs. These animals were divided into 6 groups of 10 and consistently fed a diet with one of 6 Vitamin C supplement regimes for a period of 42 days. The Vitamin C was administered either in the form of Orange Juice (OJ) or chemically pure Vitamin C in aqueous solution (VC). Each animal received the same daily dosage of Vitamin C (either 0.5, 1.0 or 2.0 milligrams) consistently. Since each combination of supplement type and dosage was given to 10 animals this required a total of 60 animals for the study. After 42 days, the animals were euthanized, their incisor teeth were harvested and subject to analysis via optical microscopy to determine the length (in microns) of the odontoblast cells (the layer between the pulp and the dentine). The ToothGrowth data set therefore consists of 60 observations of the 3 variables - mean length of odontoblasts (microns), supplement type (OJ or VC) and Vitamin C dosage (milligrams/day).
+##Provide a basic summary of the data
+A great summary of the data can be found at  https://class.coursera.org/statinference-030/forum/thread?thread_id=26.
 
 ## Use confidence intervals and/or hypothesis tests to compare tooth growth by supp and dose
 For this section we will conduct 3 hypothesis using non paired T-tests, one for each dose level.  In each case we will test the null hypotheis that the mean length of the odontoblast cells is the same between the form of Orange Juice (OJ) or chemically pure Vitamin C in aqueous solution (VC).  In each case we are assuming unequal variances. 
@@ -129,3 +72,48 @@ for (i in doselist) {
 ##            26.06            26.14
 ```
 For dose levels .5 and 1 we reject the null hypotheis that the means are equal since they both have p-values less than .05.  For does level 2, we fail to reject the null hypothesis since the p-value is greater than .05.
+
+Appendix
+
+```r
+head(ToothGrowth)
+```
+
+```
+##    len supp dose
+## 1  4.2   VC  0.5
+## 2 11.5   VC  0.5
+## 3  7.3   VC  0.5
+## 4  5.8   VC  0.5
+## 5  6.4   VC  0.5
+## 6 10.0   VC  0.5
+```
+
+```r
+str(ToothGrowth)
+```
+
+```
+## 'data.frame':	60 obs. of  3 variables:
+##  $ len : num  4.2 11.5 7.3 5.8 6.4 10 11.2 11.2 5.2 7 ...
+##  $ supp: Factor w/ 2 levels "OJ","VC": 2 2 2 2 2 2 2 2 2 2 ...
+##  $ dose: num  0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 ...
+```
+
+```r
+with(ToothGrowth,table(supp,dose))
+```
+
+```
+##     dose
+## supp 0.5  1  2
+##   OJ  10 10 10
+##   VC  10 10 10
+```
+
+```r
+qplot(dose,len,data=ToothGrowth, xlab="Dose", ylab="Length", main="", facets=.~supp)
+```
+
+![](project_part_2_files/figure-html/unnamed-chunk-5-1.png) 
+
