@@ -8,6 +8,8 @@ The purpose of this document is to analyse the ToothGrowth Data in R.  This will
 2. Provide a basic summary of the data, and
 3. Use confidence intervals and/or hypothesis tests to compare tooth growth by supp and dose 
 
+To make it easier to understand the results I've combined the report and figured together.
+
 #Analysis
 ## Load the ToothGrowth data and perform some basic exploratory data analyses
 First we set the relevant working directory and libraries.

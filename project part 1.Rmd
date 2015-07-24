@@ -9,20 +9,18 @@ output:
 ---
 
 #Report Overivew
-The purpose of this will illustrate through a simulation exercise the properties of the distribution of the mean of 40 exponentials. It will include details on (a) Sample Mean versus Theoretical Mean, (b) Sample Variance versus Theoretical Variance and (c) Show that the distribution is approximately normal.
+The purpose of this will illustrate through a simulation exercise the properties of the distribution of the mean of 40 exponentials. It will include details on (a) Sample Mean versus Theoretical Mean, (b) Sample Variance versus Theoretical Variance and (c) Show that the distribution is approximately normal.  To make it easier to understand the results I've combined the report and figures together.
 
 #Execute the simulation
-First we will execute the simulation.  Lets start by setting the working directory and referencing libraries.
+First we will execute the simulation. 
 
-```{r set work directory and reference libraries}
+```{r set work directory and reference libraries, echo=FALSE}
 #set working directory
 setwd("~/CourseraRClass/StatInf")
-
 #reference necessary libs
 library(ggplot2)
 ```
  
-Then execute the simulations using the parameters below.
 ```{r execute simulations}
 set.seed(9867)
 lambda <-.2
@@ -33,19 +31,14 @@ data<-matrix(rexp(number_sim*sample_size, lambda),number_sim,sample_size)
 
 #Results
 ##Sample Mean versus Theoretical Mean
-```{r sample means}
+```{r sample means, echo=FALSE}
 data_means<-apply(data, 1, mean)
-
-
 sample_mean<-mean(data_means)
-sample_mean
-
 theo_mean<-1/lambda 
-theo_mean
 ```
-Using the above code the sample mean is `r sample_mean` and the theorectical mean is `r theo_mean`.  The plot below gives a visual of the simulation along with the sample ("black line") and theorectical mean ("red line").
+The sample mean is `r sample_mean` and the theorectical mean is `r theo_mean`.  The plot below gives a visual of the simulation along with the sample ("black line") and theorectical mean ("red line").
  
-```{r sample means plot}
+```{r sample means plot, fig.height=3, fig.width=3, echo=FALSE}
 q<-ggplot() + 
   aes(data_means) + 
   geom_histogram(binwidth=.2, colour="black", fill="white") +
@@ -58,33 +51,20 @@ q
 
 ```
 
+```{r variances, echo=FALSE}
+data_var<-var(data_means)
+theo_var<-(1/lambda)^2 / sample_size
+```
 
 ##Sample Variance versus Theoretical Variance  
-The sample variance is the variance of the sample means
-
-```{r variances of mean}
-data_var<-var(data_means)
-data_var
-```
-with a value of `r data_var`.
-
-The theorectical variance is variance of the exponential distribution (1/lambad)^2 divided by the sample size.  See calculation below.
-```{r theorectical variance}
-theo_var<-(1/lambda)^2 / sample_size
-theo_var
-```
+The sample variance is the variance of the sample means with a value of `r data_var`. The theorectical variance is variance of the exponential distribution (1/lambad)^2 divided by the sample size, `r theo_var`.  
 
 ##Show the distribution is normal.
-The distribution of sample means are normally distributed.  To demonstrate this below is the probability density of the sample means (black line) along side the normal distribution with a mean of `r theo_mean` and variance of `r theo_var`.   You'll notice they are very close.
- 
-```{r show normal}
-p<-ggplot() + 
-  aes(data_means) + 
-  geom_density() +
-  stat_function(geom="line", 
-                fun=dnorm, 
-                colour = "red", 
-                arg=list(mean=theo_mean,sd=sqrt(theo_var))) +
+The distribution of sample means are normally distributed.  To demonstrate this below is the probability density of the sample means (black line) of 40 exponentials from 1000 simulations along side the normal distribution with a mean of `r theo_mean` and variance of `r theo_var`.   You'll notice they are very close.  The key to this being normal is that we are taking averages of 40 exponentials versus a large collection of exponentials.
+
+```{r show normal, fig.height=4, fig.width=4, echo=FALSE}
+p<-ggplot() +   aes(data_means) +   geom_density() +   stat_function(geom="line", 
+                fun=dnorm, colour = "red", arg=list(mean=theo_mean,sd=sqrt(theo_var))) +
   labs(list(title = "Probabilty Density"))
 p
 ```
